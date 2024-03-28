@@ -1,0 +1,253 @@
+#!/bin/bash
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# System Request : Debian 9+/Ubuntu 18.04+/20+
+# Develovers » Gemilangkinasih࿐
+# Email      » gemilangkinasih@gmail.com
+# telegram   » https://t.me/gemilangkinasih
+# whatsapp   » wa.me/+628984880039
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Gemilangkinasih࿐
+
+KEY=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 2)
+CHATID=$(grep -E "^#bot# " "/etc/bot/.bot.db" | cut -d ' ' -f 3)
+CHATID2=$(grep -E "^#bot# " "/etc/bot/.seller.db" | cut -d ' ' -f 2)
+export TIME="10"
+export URL="https://api.telegram.org/bot$KEY/sendMessage"
+
+tgl2=$(date +"%d")
+bln2=$(date +"%b")
+thn2=$(date +"%Y")
+tnggl="$tgl2 $bln2, $thn2"
+
+res1() {
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m        TAMBAH RESELLER VPN PREMIUM       \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -p "Seller Name    : " seller
+read -p "Password Login : " passlog
+read -p "Payment TopUp  : " payment
+read -p "Saldo TopUp    : " saldo
+read -p "Bonus TopUp(%) : " bonus
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+
+persen=$((bonus / 100))
+bonusx=$((saldo * bonus / 100))
+totalsaldo=$((saldo + bonusx))
+mkdir -p /etc/seller/
+echo "#$seller# $seller $passlog $totalsaldo 0 " >> /etc/seller/.seller.db
+
+CHATID="$CHATID"
+CHATID2="$CHATID2"
+KEY="$KEY"
+TIME="$TIME"
+URL="$URL"
+TEXT="
+Transaction Success ✓
+────────────────────
+Status TopUp $payment
+────────────────────
+<code>✧ Name   :</code> <code>$seller</code>
+<code>✧ Pw     :</code> <code>$passlog</code>
+<code>✧ Type   :</code> <code>New Reseller</code>
+<code>✧ Amount :</code> <code>$saldo</code>
+<code>✧ Bonus  :</code> <code>$bonusx</code>
+<code>✧ Total  :</code> <code>$totalsaldo</code>
+<code>✧ At     :</code> <code>$tnggl</code>
+────────────────────"
+
+TEXT2="
+Transaction Success ✓
+────────────────────
+Status TopUp $payment
+────────────────────
+<code>✧ Name   :</code> <code>$seller</code>
+<code>✧ Type   :</code> <code>New Reseller</code>
+<code>✧ Amount :</code> <code>$saldo</code>
+<code>✧ Bonus  :</code> <code>$bonusx</code>
+<code>✧ Total  :</code> <code>$totalsaldo</code>
+<code>✧ At     :</code> <code>$tnggl</code>
+────────────────────"
+
+curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+curl -s --max-time $TIME -d "chat_id=$CHATID2&disable_web_page_preview=1&text=$TEXT2&parse_mode=html" $URL >/dev/null
+
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m    DATA RESELLER BERHASIL DITAMBAHKAN    \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "Seller Name    : $seller"
+echo -e "Password Login : $passlog"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "Payment TopUp  : $payment"
+echo -e "Saldo TopUp    : $saldo"
+echo -e "Bonus TopUp    : $bonus %"
+echo -e "Total Bonus    : $bonusx"
+echo -e "Total Saldo    : $totalsaldo"
+echo -e "Tanggal Join   : $tnggl"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e ""
+read -n 1 -s -r -p "Press any key to back"
+sogokpetek
+}
+
+res2() {
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m        UPDATE RESELLER VPN PREMIUM       \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -p "Seller Name    : " seller
+read -p "Password Login : " passlog
+read -p "Payment TopUp  : " payment
+read -p "Saldo TopUp    : " saldo
+read -p "Bonus TopUp(%) : " bonus
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+saldoseller=$(grep -E "^#$seller# $seller $passlog" "/etc/seller/.seller.db" | cut -d ' ' -f 4)
+persen=$((bonus / 100))
+bonusx=$((saldo * bonus / 100))
+totalsaldo=$((saldoseller + saldo + bonusx))
+trxseller=$(grep -E "^#$seller# $seller $passlog" "/etc/seller/.seller.db" | cut -d ' ' -f 5)
+sed -i "s/^#$seller# $seller $passlog $saldoseller $trxseller/#$seller# $seller $passlog $totalsaldo $trxseller/" "/etc/seller/.seller.db"
+
+CHATID="$CHATID"
+CHATID2="$CHATID2"
+KEY="$KEY"
+TIME="$TIME"
+URL="$URL"
+TEXT="
+Transaction Success ✓
+────────────────────
+Status TopUp $payment
+────────────────────
+<code>✧ Name   :</code> <code>$seller</code>
+<code>✧ Pw     :</code> <code>$passlog</code>
+<code>✧ Amount :</code> <code>$saldo</code>
+<code>✧ Bonus  :</code> <code>$bonusx</code>
+<code>✧ Total  :</code> <code>$totalsaldo</code>
+<code>✧ Count  :</code> <code>$trxseller</code>
+<code>✧ At     :</code> <code>$tnggl</code>
+────────────────────"
+
+TEXT2="
+Transaction Success ✓
+────────────────────
+Status TopUp $payment
+────────────────────
+<code>✧ Name   :</code> <code>$seller</code>
+<code>✧ Amount :</code> <code>$saldo</code>
+<code>✧ Bonus  :</code> <code>$bonusx</code>
+<code>✧ Total  :</code> <code>$totalsaldo</code>
+<code>✧ Count  :</code> <code>$trxseller</code>
+<code>✧ At     :</code> <code>$tnggl</code>
+────────────────────"
+
+curl -s --max-time $TIME -d "chat_id=$CHATID&disable_web_page_preview=1&text=$TEXT&parse_mode=html" $URL >/dev/null
+curl -s --max-time $TIME -d "chat_id=$CHATID2&disable_web_page_preview=1&text=$TEXT2&parse_mode=html" $URL >/dev/null
+
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m   DATA TOPUP RESELLER BERHASIL DIUPDATE  \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "Seller Name    : $seller"
+echo -e "Password Login : $passlog"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "Payment TopUp  : $payment"
+echo -e "Saldo TopUp    : $saldo"
+echo -e "Bonus TopUp    : $bonus %"
+echo -e "Saldo Awal     : $saldoseller"
+echo -e "Total Bonus    : $bonusx"
+echo -e "Total Saldo    : $totalsaldo"
+echo -e "Tanggal TopUp  : $tnggl"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e ""
+read -n 1 -s -r -p "Press any key to back"
+sogokpetek
+}
+
+res3() {
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m    SETTING HARGA RESELLER VPN PREMIUM    \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -p "Input Harga Vpn : " harga
+mkdir -p /etc/harga/
+echo "$harga" > /etc/harga/vpn
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -n 1 -s -r -p "Press any key to back"
+sogokpetek
+}
+
+res4() {
+clear
+echo -e ""
+echo -e "▀▀█▀▀ ▒█▀▀▀ ▒█░░░ ▒█▀▀▀ ▒█▀▀█ ▒█▀▀▀█ ▀▀█▀▀\033[0m" 
+echo -e "░▒█░░ ▒█▀▀▀ ▒█░░░ ▒█▀▀▀ ▒█▀▀▄ ▒█░░▒█ ░▒█░░\033[0m" 
+echo -e "░▒█░░ ▒█▄▄▄ ▒█▄▄█ ▒█▄▄▄ ▒█▄▄█ ▒█▄▄▄█ ░▒█░░\033[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo "Pergi ke @BotFather dan type /newbot untuk membuat bot baru"
+echo "Pergi ke @MissRose_bot dan type /id untuk mendapatkan ID telegram"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -p "Input Grub ID  : " grub
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo "#bot# ${grub}" > /etc/bot/.seller.db
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m     SET UP BOT TELEGRAM NOTIF SUCCESS    \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo "Input Grub ID  : $grub"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -n 1 -s -r -p "Press any key to back"
+sogokpetek
+}
+
+res5() {
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m     MENU SETTING LIMIT IP VPN PREMIUM    \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -p "Input Limit IP : " limit
+mkdir -p /etc/limit
+echo "$limit" > /etc/limit/ip
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -n 1 -s -r -p "Press any key to back"
+sogokpetek
+}
+
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m   LOGIN PANEL MENU RESELLER VPN PREMIUM  \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+read -p "Input Paassword : " admin
+
+if [[ $admin != "@Sogokpetek123As" ]]; then
+    echo "Password Admin Tidak Valid"
+    sleep 3
+    sogokpetek
+fi
+
+clear
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e "\E[40;1;37m      MENU ADMIN RESELLER VPN PREMIUM     \E[0m"
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e ""
+echo -e "  [\033[1;96m01\E[0m] Tambah Reseller Vpn"
+echo -e "  [\033[1;96m02\E[0m] Update Saldo Seller Vpn"
+echo -e "  [\033[1;96m03\E[0m] Setting Harga Vpn"
+echo -e "  [\033[1;96m04\E[0m] Setting Bot Notif Seller"
+echo -e "  [\033[1;96m05\E[0m] Setting Limit Ip"
+echo -e "  [\033[1;96m06\E[0m] Cek Database Reseller"
+echo -e ""
+echo -e "\e[33m──────────────────────────────────────────\033[0m"
+echo -e ""
+read -p "Select From Options ➤ " opt
+case $opt in
+1) clear ; res1 ; ;;
+2) clear ; res2 ; ;;
+3) clear ; res3 ; ;;
+4) clear ; res4 ; ;;
+5) clear ; res5 ; ;;
+6) clear ; nano /etc/seller/.seller.db ; sogokpetek ; ;;
+0) clear ; menu ; exit ;;
+x) exit ;;
+*) echo "Pilihan anda tidak tersedia! " ; sleep 1 ; sogokpetek ;;
+esac
