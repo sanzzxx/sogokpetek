@@ -1,0 +1,35 @@
+#!/bin/bash
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# System Request : Debian 9+/Ubuntu 18.04+/20+
+# Develovers » Gemilangkinasih࿐
+# Email      » gemilangkinasih@gmail.com
+# telegram   » https://t.me/gemilangkinasih
+# whatsapp   » wa.me/+628984880039
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Gemilangkinasih࿐
+
+wget -q -O /usr/bin/keamanan "https://raw.githubusercontent.com/sanzzxx/sogokpetek/main/files/keamanan" > /dev/null 2>&1
+
+# SERVICE LIMIT IP VMESS
+cat >/etc/systemd/system/keamanan.service << EOF
+[Unit]
+Description=Set Up - By Gemilang Kinasih
+ProjectAfter=network.target
+
+[Service]
+WorkingDirectory=/root
+ExecStart=/usr/bin/bash keamanan
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+rm -r keamananx
+systemctl daemon-reload
+systemctl enable --now keamanan
+
+# echo "Fitur Keamanan Success!"
+# echo "Reboot Otomatis Ram (90%)! Back In 5 Seconds"
+# sleep 5
+# menu

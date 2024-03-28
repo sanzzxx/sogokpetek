@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Mengambil total RAM, RAM yang digunakan, dan RAM yang tersedia
+tram=$(free -m | awk 'NR==2 {print $2}')
+uram=$(free -m | awk 'NR==2 {print $3}')
+fram=$(free -m | awk 'NR==2 {print $4}')
+
+# Menghitung persentase RAM yang digunakan
+usage_percentage=$(( (uram * 100) / tram ))
+
+# Ambang batas persentase penggunaan RAM untuk reboot
+threshold=90
+
+# Cek apakah persentase penggunaan RAM melebihi ambang batas
+if [ $usage_percentage -ge $threshold ]; then
+    echo "Penggunaan RAM ($usage_percentage%) melebihi ambang batas ($threshold%)"
+    echo "Menjalankan reboot..."
+    # Perintah reboot
+    reboot
+else
+    echo "Penggunaan RAM ($usage_percentage%) masih di bawah ambang batas ($threshold%)"
+fi
+
+sleep 60
